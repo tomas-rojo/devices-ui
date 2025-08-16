@@ -12,10 +12,7 @@ export default function Home() {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        if (!process.env.NEXT_PUBLIC_API_URL) {
-          throw new Error("NEXT_PUBLIC_API_URL environment variable is not defined");
-        }
-        const res = await fetch(process.env.NEXT_PUBLIC_API_URL, {
+        const res = await fetch('/api/devices', {
           headers: { "Content-Type": "application/json" },
         });
 
