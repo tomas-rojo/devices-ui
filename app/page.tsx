@@ -12,10 +12,10 @@ export default function Home() {
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        if (!process.env.API_URL) {
-          throw new Error("API_URL environment variable is not defined");
+        if (!process.env.NEXT_PUBLIC_API_URL) {
+          throw new Error("NEXT_PUBLIC_API_URL environment variable is not defined");
         }
-        const res = await fetch(process.env.API_URL, {
+        const res = await fetch(process.env.NEXT_PUBLIC_API_URL, {
           headers: { "Content-Type": "application/json" },
         });
 
@@ -25,8 +25,12 @@ export default function Home() {
 
         const data: Device[] = await res.json();
         setDevices(data);
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch devices");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Failed to fetch devices");
+        }
       } finally {
         setLoading(false);
       }
